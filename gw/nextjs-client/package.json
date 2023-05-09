@@ -1,0 +1,19 @@
+{
+  "name": "nextjs-client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "proxy": "http://127.0.0.1:5000",
+  "dependencies": {
+    "next": "13.2.4",
+    "query-string": "^8.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-router-dom": "^6.11.1"
+  }
+}
