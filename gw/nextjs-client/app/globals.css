@@ -4,3 +4,69 @@
     color: white;
     text-align: center;
 }
+.card-block {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+    padding: 20px;
+    border: 1px #dfdfdf solid;
+}
+
+.card-title {
+    font-size: 1rem;
+}
+
+.fintech-use-no {
+    font-size: 0.7rem;
+    margin-bottom: 10px;
+}
+.account-no {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.qr-button {
+    width: 120px;
+    height: 40px;
+    background: #2959d4;
+    color: white;
+    border: none;
+}
+
+.balance-button {
+    width: 120px;
+    height: 40px;
+    background: #df6a38;
+    color: white;
+    margin-left: 10px;
+    border: none;
+}
+
+.button-block {
+    display: flex;
+    flex-direction: row;
+}
+
+.balance-block {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #000;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.bank-name {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* .fintech-no {
+    
+} */
+
+.balance-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    text-align: right;
+}
