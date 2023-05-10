@@ -1,24 +1,47 @@
 'use client'
-import {
-    usePathname,
-    useRouter,
-    useSearchParams,
-    useSelectedLayoutSegment,
-    useSelectedLayoutSegments,
-    redirect,  
-    notFound,
-} from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import queryString from 'query-string';
-
+import axios from 'axios';
+import { useState } from 'react';
 
 export default function Authresult() {
-    const router = useSearchParams();
-    const queryStr = router.toString(); // URLSearchParams 객체를 문자열로 변환합니다.
-    const parsedQuery = queryString.parse(queryStr); // 문자열을 파싱하여 객체 형식으로 변환합니다.
+  const router = useSearchParams();
+  const queryStr = router.toString();
+  const parsedQuery = queryString.parse(queryStr);
+  const code = parsedQuery.code;
+  const [accessToken, setAccessToken] = useState('토큰이 없습니다.');
+  const [userSeqNo, setUserSeqNo] = useState('사용자 번호가 없습니다.');
 
-    console.log(parsedQuery);
-    
-    return(
-        <div></div>
-    )
+  const handleGetAccessToeknClick = () => {
+    const sendData = {
+      code: code,
+      client_id: '0135b90b-a1d9-472a-9dba-53f2a93703f5',
+      client_secret: '9ec18858-bf9f-4d75-8f3d-80e2ce34e082',
+      redirect_uri: 'http://localhost:3000/authResult',
+      grant_type: 'authorization_code',
+    };
+
+    axios
+      .post('/api/get-token', sendData)
+      .then((data) => {
+        console.log(data);
+        if (data.data.rsp_code === 'O0001') {
+          alert('인증코드가 만료되었습니다. 인증을 다시 진행해 주세요');
+        } else {
+          setAccessToken(data.data.access_token);
+          setUserSeqNo(data.data.user_seq_no);
+          localStorage.setItem('accessToken', data.data.access_token);
+          localStorage.setItem('userSeqNo', data.data.user_seq_no);
+        }
+      });
+  };
+
+  return (
+    <div>
+      <p>인증코드: {code}</p>
+      <button onClick={handleGetAccessToeknClick}>인증 요청</button>
+      <p>accessToken : {accessToken}</p>
+      <p>userSeqNo : {userSeqNo}</p>
+    </div>
+  );
 }
