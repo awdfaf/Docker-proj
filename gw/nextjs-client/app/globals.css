@@ -60,13 +60,47 @@
     font-weight: bold;
 }
 
-/* .fintech-no {
-    
-} */
-
 .balance-text {
     font-size: 1.5rem;
     font-weight: bold;
     margin-top: 1rem;
     text-align: right;
+}
+.qr-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+}
+
+.ModalWithdrawBlock {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+    padding: 20px;
+    border: 1px #dfdfdf solid;
+}
+
+.WithDrawButton {
+    border: none;
+    padding: 0.3rem;
+    background: #2aa450;
+    color: white;
+    margin-top: 0.3rem;
+}
+.ModalCardBlock {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+    padding: 20px;
+    border: 1px #112211 solid;
+}
+
+.CardTitle {
+    font-size: 1rem;
+    color: black;
+}
+.FintechUseNo {
+    font-size: 0.7rem;
+    margin-bottom: 30px;
 }
