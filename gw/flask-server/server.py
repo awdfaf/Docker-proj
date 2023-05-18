@@ -16,6 +16,9 @@ import contextlib
 # 생성된 wav 파일을 지우기 위한 모듈
 import os
 from werkzeug.utils import secure_filename
+from google.cloud import storage
+
+
 
 app = Flask(__name__)
 CORS(app)
@@ -134,16 +137,31 @@ class Voice:
 
         return text
 
+# Google Cloud Storage 클라이언트 생성
+storage_client = storage.Client.from_service_account_json('./helical-button-381600-09e0ad9040c9.json')
+bucket_name = 'awdfaf_storage'
+bucket = storage_client.get_bucket(bucket_name)
 
-
-
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    file = request.files['file']
+    if file:
+        filename = secure_filename(file.filename)
+        blob = bucket.blob(filename)
+        blob.upload_from_string(
+            file.read(),
+            content_type=file.content_type
+        )
+        return 'File uploaded to {}.'.format(bucket_name)
+    else:
+        return 'No file uploaded.', 400
 
 
 
     
     
 @app.route('/api/upload', methods=['POST'])
-def upload_file():
+def upload_files():
     # if 'file' not in request.files:
     #     return 'No file part', 400
     if 'file' not in request.files:
