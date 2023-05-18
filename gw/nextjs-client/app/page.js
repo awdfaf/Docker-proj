@@ -1,29 +1,37 @@
-import { Storage } from "@google-cloud/storage";
+'use client'
 
-export default async function Home() {
+import React, { useState } from 'react';
+
+export default function GCP_storage() {
+
+  const [yourFile, setYourFile] = useState(null);
+  const [uploadUrl, setUploadUrl] = useState(null);
+
+  const submit = async event => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('file', yourFile);
+
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      const url = await response.text();
+      setUploadUrl(url);
+    } else {
+      console.error('Upload failed');
+    }
+  };
   
-  const {Storage} = require('@google-cloud/storage');
-
-  const storage = new Storage({
-    projectId: 'helical-button-381600',
-    keyFilename: '../helical-button-381600-33e40d727182.json' // 서비스 계정 키 파일 경로
-  });
-
-  const bucket = storage.bucket('awdfaf_storage');
-
-  const file = bucket.file('aaa.png');
-
-  file.createWriteStream()
-    .on('error', function(err) {})
-    .on('finish', function() {
-      // The file upload is complete.
-    })
-    .end('./aaa.png');
 
   return (
-      <div>
-        시작페이지
-      </div>
-      
+    <form onSubmit={submit}>
+      <input type="file" onChange={e => setYourFile(e.target.files[0])} />
+      <button type="submit">Upload</button>
+      {uploadUrl && <p>Uploaded to: {uploadUrl}</p>}
+    </form>
   )
+  
 }
