@@ -19,8 +19,8 @@ class Voice:
     def __init__(self):
         # self.file = input_file   # 분석을 원하는 음성 파일
         self.r = sr.Recognizer() 
-        self.df = pd.read_csv("./data/500_가중치.csv", encoding='utf-8')             # 전체 형태소 분석 (가중치) 파일 
-        self.type_df = pd.read_csv("./data/type_token_가중치.csv", encoding='utf-8') # 범죄 유형 분류 기준 단어 파일
+        self.df = pd.read_csv("./phishing/500_가중치.csv", encoding='utf-8')             # 전체 형태소 분석 (가중치) 파일 
+        self.type_df = pd.read_csv("./phishing/type_token_가중치.csv", encoding='utf-8') # 범죄 유형 분류 기준 단어 파일
         self.cnt = 1        # 보이스피싱 확률 변수
         self.type1_cnt = 1  # 대출사기형 확률
         self.type2_cnt = 1  # 수사기관사칭형 확률        

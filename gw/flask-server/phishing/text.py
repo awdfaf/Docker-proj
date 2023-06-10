@@ -14,8 +14,8 @@ okt = Okt()
 
 class Text:
     def __init__(self):
-        self.sms_data_sorted1=pd.read_csv('./data/sms_data_sorted1.csv')
-        self.smishing_addresses = pd.read_csv('./data/sms_ip(최종).csv')
+        self.sms_data_sorted1=pd.read_csv('./phishing/sms_data_sorted1.csv')
+        self.smishing_addresses = pd.read_csv('./phishing/sms_ip(최종).csv')
         self.fraud_ip_addresses = self.smishing_addresses['IP'].tolist()
         self.fraud_urls = self.smishing_addresses['URL'].tolist()
         self.komoran = Komoran()
@@ -30,7 +30,7 @@ class Text:
         # 단어수 및 단어마다 가중치 계산
         self.total_count = sum(self.word_counts.values())  # 총 단어수
         # word_frequencies읽어들이기
-        self.word_frequencies = pd.read_csv('./data/word_frequencies(가중치)1.csv')
+        self.word_frequencies = pd.read_csv('./phishing/word_frequencies(가중치)1.csv')
 
         # high_frequency_words읽어들이기
         # high_frequency_words가장 많이 나타난 단어 300개
