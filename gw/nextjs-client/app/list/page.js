@@ -15,7 +15,7 @@ export default function List(){
             <Link href="/consumption">소비 패턴 분석</Link>
             </span>
             <span className="link-container">
-            <Link href="/qrreader">이상치 탐지</Link>
+            <Link href="/outlier">이상치 탐지</Link>
             </span>
             <hr />
             <Getitems></Getitems>

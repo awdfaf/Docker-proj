@@ -9,6 +9,7 @@ export default function Consume() {
     const [filename, setFilename] = useState(null);
     const [df, setDf] = useState(null);
     const [total_df, setTotal_df] = useState(null);
+    const [results_df, setResults_df] = useState([]);
 
     const [chart1, setChart1] = useState(null);
     const [chart2, setChart2] = useState(null);
@@ -29,6 +30,7 @@ export default function Consume() {
             setFilename(data.filename);
             setDf(JSON.parse(data.df));
             setTotal_df(JSON.parse(data.total_df));
+            setResults_df(data.results_df)
         })
         .catch(error => {
             console.error(error);
@@ -426,7 +428,7 @@ export default function Consume() {
             {/* 각 버튼에 onClick 이벤트를 추가하여 해당하는 은행 데이터를 가져옵니다. */}
             <button onClick={() => fetchData('kakaobank')}>카카오뱅크</button>
             <button onClick={() => fetchData('kb')}>국민은행</button>
-            <button onClick={() => fetchData('Cbank')}>Cbank</button>
+            <button onClick={() => fetchData('hanabank')}>하나은행</button>
 
             <div className="centered-text">
                 <h1>거래 내역 분석 시각화</h1>
@@ -461,6 +463,48 @@ export default function Consume() {
                     <canvas id="pieChart2"></canvas>
                 </div>
             </div>
+            < hr/>
+                <h2>Detected Transactions:</h2>
+                <style jsx global>{`
+                    table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    th, td {
+                        text-align: left;
+                        padding: 8px;
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                    }
+                    tr:nth-child(even) {
+                        background-color: #f2f2f2;
+                    }
+                `}</style>
+                <table>
+                <thead>
+                    <tr>
+                        <th>거래일시</th>
+                        <th>거래구분</th>
+                        <th>업명</th>
+                        <th>출금액</th>
+                        <th>이상치 예측 점수</th>
+                        <th>상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {results_df.map((result, index) => (
+                        <tr key={index}>
+                            <td>{result['거래일시']}</td>
+                            <td>{result['거래구분']}</td>
+                            <td>{result['업명']}</td>
+                            <td>{result['출금액']}</td>
+                            <td>{result['이상치 예측 점수']}</td>
+                            <td>{result['상태']}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     )
 }
