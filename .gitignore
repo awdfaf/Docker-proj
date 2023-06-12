@@ -44,4 +44,5 @@ yarn-error.log*
 pretrained_models/2stems/model.data-00000-of-00001
 
 
-gw/flask-server/Labelencoder/checkpoints/cp.ckpt.data-00000-of-00001
+flask-server/Labelencoder/checkpoints/cp.ckpt.data-00000-of-00001
+flask-server/projenv
