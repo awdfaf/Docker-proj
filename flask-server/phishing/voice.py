@@ -1,52 +1,97 @@
+import pickle
 import pandas as pd
+import numpy as np
+import re
+import urllib.request
+from tqdm import tqdm
+import time
+
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.models import load_model
+
 import speech_recognition as sr
-# 인식할 수 없는 형태의 음원 파일을 변환하기 위한 모듈
-from pydub import AudioSegment
-# 형태소 분석
+import pyaudio
 from konlpy.tag import Okt
-okt = Okt()
-# 데이터프레임 출력을 위한 모듈
-from IPython.display import display
-# wav 파일 길이를 가져오기
+
+from pydub import AudioSegment
 import wave
 import contextlib
-import pyaudio
 import os
 
 
-
-class Voice:    
-    def __init__(self):
-        # self.file = input_file   # 분석을 원하는 음성 파일
-        self.r = sr.Recognizer() 
-        self.df = pd.read_csv("./phishing/500_가중치.csv", encoding='utf-8')             # 전체 형태소 분석 (가중치) 파일 
-        self.type_df = pd.read_csv("./phishing/type_token_가중치.csv", encoding='utf-8') # 범죄 유형 분류 기준 단어 파일
-        self.cnt = 1        # 보이스피싱 확률 변수
-        self.type1_cnt = 1  # 대출사기형 확률
-        self.type2_cnt = 1  # 수사기관사칭형 확률        
-        self.text = ''      # 음성에서 변환된 텍스트
-        self.export_cnt = 0 # 새롭게 wav 파일이 만들어졌는지 여부를 알기 위함
-
-    # 음성 파일을 wav 파일로 통일하는 함수
-    def to_wav(self, input_file):
+class Voice:
+    def __init__(self, ):
+        
+        self.r = sr.Recognizer()
+        
+        self.loaded_model = load_model("./model/all_best_model.h5")
+        self.type1_model = load_model("./model/type1_best_model.h5")
+        self.type2_model = load_model("./model/type2_best_model.h5")
+        self.stopwords = pd.read_csv("https://raw.githubusercontent.com/yoonkt200/FastCampusDataset/master/korean_stopwords.txt").values.tolist()
+        self.df = pd.read_csv("./phishing/call_all.csv")
+        self.df = self.df.dropna(how="any")
+        self.train_data = self.df[:600]
+        self.test_data = self.df[600:]
+        
+        self.train_data.drop_duplicates(subset=["text"], inplace=True)
+        self.train_data["text"] = self.train_data["text"].str.replace("[^ㄱ-ㅎㅏ-ㅣ가-힣 ]", "", regex=True)
+        self.train_data["text"] = self.train_data["text"].str.replace("^ +", "", regex=True)
+        self.train_data["text"].replace("", np.nan, inplace=True)
+        self.train_data = self.train_data.dropna(how="any")
+        self.okt = Okt()
+        
+        self.X_train = []
+        for sentence in tqdm(self.train_data["text"]):
+            tokenized_sentence = self.okt.morphs(sentence, stem=True)
+            stopwords_removed_sentence = [word for word in tokenized_sentence if not word in self.stopwords]
+            self.X_train.append(stopwords_removed_sentence)
+        
+        self.test_data["text"] = self.test_data["text"].str.replace("[^ㄱ-ㅎㅏ-ㅣ가-힣 ]", "", regex=True)
+        self.test_data["text"] = self.test_data["text"].str.replace("^ +", "", regex=True)
+        self.test_data["text"].replace("", np.nan, inplace=True)
+        self.test_data = self.test_data.dropna(how="any")
+        
+        self.X_test = []
+        for sentence in tqdm(self.test_data["text"]):
+            tokenized_sentence = self.okt.morphs(sentence, stem=True)
+            stopwords_removed_sentence = [word for word in tokenized_sentence if not word in self.stopwords]
+            self.X_test.append(stopwords_removed_sentence)
+        
+        self.tokenizer = Tokenizer(3278)
+        self.tokenizer.fit_on_texts(self.X_train)
+        self.X_train = self.tokenizer.texts_to_sequences(self.X_train)
+        self.X_test = self.tokenizer.texts_to_sequences(self.X_test)
+        self.y_train = np.array(self.train_data["phishing"])
+        self.y_test = np.array(self.test_data["phishing"])
+        self.X_train = pad_sequences(self.X_train, maxlen=800)
+        self.X_test = pad_sequences(self.X_test, maxlen=800)
+        
+        self.cnt = 1
+        self.type1_cnt = 1
+        self.type2_cnt = 1
+        self.text = ''
+        self.export_cnt = 0
+    
+    def to_wav(self, file_path):
         try:
-            if input_file[input_file.rfind('.')+1:] != 'wav':
-                sound = AudioSegment.from_file(input_file) 
-                input_file = input_file[:input_file.rfind('.')]+'.wav'
-                sound.export(input_file , format="wav")  # 파일을 인식할 수 있도록 파일 형식 변환
+            if file_path[file_path.rfind('.')+1:] != 'wav':
+                sound = AudioSegment.from_file(file_path) 
+                file_path = file_path[:file_path.rfind('.')]+'.wav'
+                sound.export(file_path, format="wav")
                 self.export_cnt = 1
-            with contextlib.closing(wave.open(input_file, 'r')) as f:
+            
+            with contextlib.closing(wave.open(file_path, 'r')) as f:
                 frames = f.getnframes()
                 rate = f.getframerate()
-                duration = frames / float(rate)
-            self.duration_list = [30]*int(duration/30) + [round(duration%30)]
+                duration = frames / float(rate)            
+            self.duration_list = [30] * int(duration/30) + [round(duration%30)]            
         except:
             print('Error')
-
-    # 음성을 텍스트로 변환하는 함수        
-    def recognize(self, input_file):
+            
+    def recognize(self, file_path):
         try:
-            with sr.AudioFile(input_file) as source:
+            with sr.AudioFile(file_path) as source:
                 for duration in self.duration_list:
                     self.r.adjust_for_ambient_noise(source, duration=0.5)
                     self.r.dynamic_energy_threshold = True
@@ -55,73 +100,40 @@ class Voice:
                         self.text += self.r.recognize_google(audio_data=audio, language='ko-KR')
                         print('▶ 통화내역 : {}'.format(self.text))
                     except:
-                        None
+                        None             
             if self.export_cnt == 1:
-                if os.path.exists(input_file):
-                    os.remove(input_file)
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                    
         except: 
             print('Error')
-
-    # 텍스트 파일을 형태소 분석하는 코드
-    def detection(self):
-        self.token_ko = pd.DataFrame(okt.pos(self.text), columns=['단어', '형태소'])
-        self.token_ko = self.token_ko[(self.token_ko['단어'].str.len() > 1) & (self.token_ko.형태소.isin(['Noun', 'Adverb']))]
             
-        token_dict = {} # 단어:횟수 딕셔너리 생성
-            
-        for i in self.token_ko.단어.values:
-            if i in self.df.단어.values:
-                self.cnt *= float(self.df.loc[self.df.단어==i, '확률'])
-                if i not in token_dict:
-                    token_dict[i] = 1
-                else:
-                    token_dict[i] = token_dict.get(i) + 1 
-
-        self.token_df = pd.DataFrame(zip(token_dict.keys(),token_dict.values()), columns=['의심 단어', '횟수'])
-        self.token_df = self.token_df.sort_values(by='횟수', ascending=False)
-    
-        if self.cnt > 100:
-            self.cnt = 100  # 확률이 100%를 넘겼을 경우 100으로 초기화
-            
-    # 유형을 분류하는 함수 
-    def categorizing(self):
-        for i, x in zip(self.token_df['의심 단어'].values, self.token_df['횟수'].values):
-            if i in self.type_df.type1_단어.values:
-                self.type1_cnt *= float(self.type_df.loc[self.type_df.type1_단어==i, 'type1_확률']) ** x
-            elif i in self.type_df.type2_단어.values:
-                self.type2_cnt *= float(self.type_df.loc[self.type_df.type2_단어==i, 'type2_확률']) ** x
-                
-        if self.type1_cnt > self.type2_cnt:
-            return '대출사기형'
-        else:
-            return '수사기관사칭형'
-                        
-    # 결과를 출력하는 함수
-    def result(self, input_file):
-        self.to_wav(input_file)
-        self.recognize(input_file) # 음성 텍스트 변환 함수 호출
-        self.detection() # 분석 함수 호출
+    def sentiment_predict(self):
+        self.text = re.sub("[^ㄱ-ㅎㅏ-ㅣ가-힣 ]", "", self.text)
+        self.text = self.okt.morphs(self.text, stem=True)
+        self.text = [word for word in self.text if not word in self.stopwords]
+        encoded = self.tokenizer.texts_to_sequences([self.text])
+        pad_new = pad_sequences(encoded, maxlen=800)
+        score = float(self.loaded_model.predict(pad_new))
         
-        if self.cnt <= 20: safe_type = '안전'
-        elif self.cnt <= 40: safe_type = '의심'
-        elif self.cnt <= 60: safe_type = '경고'
-        else: safe_type = '위험'
+        if score > 0.5:
+            print("{}% 확률로 보이스피싱입니다.".format(score * 100))
+            score1 = float(self.type1_model.predict(pad_new))
+            score2 = float(self.type2_model.predict(pad_new))
             
-        bolded_safe_type = "\033[1m" + safe_type + "\033[0m"
-            
-        print(f'▶ 보이스피싱 확률 : {self.cnt:.2f}% [{bolded_safe_type}]')
-
-        # 보이스피싱 확률이 의심 단계 이상일 때만 출력할 수 있도록 함
-        text = ""
-        if self.cnt > 20:
-            self.token_csv = self.token_ko['단어'].values # csv 생성을 위한 통화음성 단어 추출 (명사, 부사)
-            
-            type_title = self.categorizing() # 유형 분류 함수 호출
-            print(f'▶ 해당 음성은 {type_title} 보이스피싱일 가능성이 높습니다')
-            text = f'▶ 해당 음성은 {type_title} 보이스피싱일 가능성이 높습니다'
-            
-        elif self.cnt <= 20:
-            print(f'▶ 해당 음성은 보이스피싱일 가능성이 낮습니다')
-            text = f'▶ 해당 음성은 보이스피싱일 가능성이 낮습니다'
-
-        return text
+            if score1 > score2:
+                print("{}% 확률로 대출사기형 보이스피싱입니다.".format(score1 * 100))
+                text = "{}% 확률로 대출사기형 보이스피싱입니다.".format(score1 * 100)
+            else:
+                print("{}% 확률로 기관사칭형 보이스피싱입니다.".format(score2 * 100))
+                text = "{}% 확률로 기관사칭형 보이스피싱입니다.".format(score2 * 100)       
+        else:
+            print("{}% 확률로 보이스피싱이 아닙니다.".format((1 - score) * 100))
+            text = "{}% 확률로 보이스피싱이 아닙니다.".format((1 - score) * 100)
+        return text       
+    def result(self,file_path):
+        self.text = ''
+        self.to_wav(file_path)
+        self.recognize(file_path)
+        res = self.sentiment_predict()
+        return res
