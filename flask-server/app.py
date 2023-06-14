@@ -52,7 +52,7 @@ def upload_text_files():
     input_text = request.data.decode('utf-8')  # 입력 텍스트를 받아옴
     
     
-    res = sms.predict_text(input_text)
+    res = sms.detect_fraud_sms(input_text)
     
     return res
 

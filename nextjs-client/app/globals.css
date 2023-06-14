@@ -130,3 +130,19 @@
     padding: 10px;
     margin-top: 20px;
 }
+
+.home-button {
+    background-color: #f8f8f8;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .home-button:hover {
+    background-color: #ebebeb;
+  }

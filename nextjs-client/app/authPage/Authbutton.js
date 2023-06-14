@@ -12,10 +12,11 @@ export default function Authbutton() {
         tmpwindow.location.href = authPageUrl;
     }
 
+
     return (
     <div>
         <button className="auth-button" 
-                onClick={ handleAuthButtonClick }>인증 버튼</button>
+                onClick={ handleAuthButtonClick }>인증 하기</button>
     </div>
     );
 }
