@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify # Flask
 from flask_cors import CORS
 import os
 from phishing.voice import Voice
-from phishing.text import SmishingDetector
+from phishing.text import Sms
 import pandas as pd
 from bankanalysis import bankanalysis
 from outlierdetection import detect
@@ -16,10 +16,7 @@ UPLOAD_FOLDER = './audio'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # vp = Voice()
-smishing_detector = SmishingDetector()
-smishing_detector.vectorizer = CountVectorizer()
-smishing_detector.load_model("./model/sms_model.pt")
-
+sms = Sms()
 
 
 @app.route('/api/upload', methods=['POST'])
@@ -55,9 +52,9 @@ def upload_text_files():
     input_text = request.data.decode('utf-8')  # 입력 텍스트를 받아옴
     
     
-    #input_text = 'adasd'
-    print(input_text)
-    return input_text
+    res = sms.predict_text(input_text)
+    
+    return res
 
 # ------------------------------------------------------------
 
