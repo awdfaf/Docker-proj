@@ -1,3 +1,5 @@
+![Untitled](./images/Untitled.png)
+
 # 뱅크비빔밥_스마트 금융
 
 ## Introduce
@@ -152,4 +154,3 @@
 
 [웹 페이지 캡쳐](https://www.notion.so/908d5a09fac44da2b34b8d40ed6a4d03?pvs=21)
 
-![Untitled](./images/Untitled.png)
