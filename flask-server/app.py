@@ -15,7 +15,7 @@ CORS(app)
 UPLOAD_FOLDER = './audio'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# vp = Voice()
+vp = Voice()
 sms = Sms()
 
 
@@ -42,8 +42,8 @@ def upload_voice_files():
     
     
     
-    #res = vp.result(file_path)
-    res = ''
+    res = vp.result(file_path)
+    
     return res
 # ------------------------------------------------------------
 
@@ -52,7 +52,7 @@ def upload_text_files():
     input_text = request.data.decode('utf-8')  # 입력 텍스트를 받아옴
     
     
-    res = sms.predict_text(input_text)
+    res = sms.detect_fraud_sms(input_text)
     
     return res
 

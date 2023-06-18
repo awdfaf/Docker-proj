@@ -58,7 +58,7 @@ class Voice:
             stopwords_removed_sentence = [word for word in tokenized_sentence if not word in self.stopwords]
             self.X_test.append(stopwords_removed_sentence)
         
-        self.tokenizer = Tokenizer(3278)
+        self.tokenizer = Tokenizer(2664)
         self.tokenizer.fit_on_texts(self.X_train)
         self.X_train = self.tokenizer.texts_to_sequences(self.X_train)
         self.X_test = self.tokenizer.texts_to_sequences(self.X_test)

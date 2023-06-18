@@ -1,0 +1,33 @@
+.customFileUpload {
+    display: none;
+}
+
+.fileUploadButton {
+    padding: 10px;
+    color: #fff;
+    background-color: #ADD8E6; /* Light Blue */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.fileName {
+    margin-top: 10px;
+    color: #87CEEB; /* Sky Blue */
+}
+
+.uploadButton {
+    padding: 10px;
+    color: #fff;
+    background-color: #87CEEB; /* Sky Blue */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.horizontalRule {
+    width: 100%;
+    color: #E6E6FA; /* Lavender */
+    margin-top: 20px;
+}

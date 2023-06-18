@@ -1,0 +1,29 @@
+/* Main.module.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+  
+  .link {
+    margin: 1rem 0;
+    padding: 1rem;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    background-color: #0070f3;
+    border-radius: 5px;
+  }
+  
+  .link:hover {
+    background-color: #0056b3;
+  }
+  
+  .hr {
+    width: 100%;
+    margin: 2rem 0;
+  }
+  

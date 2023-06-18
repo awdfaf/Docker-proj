@@ -1,9 +1,14 @@
 import Detection from "./Detection";
+import Nav from "./Navation";
 
 export default function Voice() {
 
 
   return (
-    <Detection></Detection>
+    <div>
+      <Nav></Nav>
+      <Detection></Detection>
+    </div>
+    
   )
 }

@@ -1,8 +1,11 @@
 'use client'
 
 import { useState } from 'react';
+import { Card, Text } from "@nextui-org/react";
 
 export default function Detection() {
+
+    
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [responseData, setResponseData] = useState('');
@@ -35,10 +38,19 @@ export default function Detection() {
 
     return (
     <div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+                <h2>보이스피싱 탐지</h2>
+        </div>
+        
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUpload}>Upload</button>
         <hr />
-        <dvi>{responseData}</dvi>
+        <Card css={{ mw: "800px" }}>
+            <Card.Body>
+                <dvi>{responseData}</dvi>
+            </Card.Body>
+        </Card>
+        
     </div>
     )
 }

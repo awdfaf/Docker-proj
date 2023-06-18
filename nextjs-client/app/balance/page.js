@@ -1,20 +1,18 @@
 import Balance from "./Balance";
-
+import Nav from './Navation.js'
 
 
 
 export default function BalancePage() {
 
-    
-
-    
-
     return(
         <div>
-            <h2>잔액조회</h2>
+            <Nav></Nav>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                <h2>잔액 조회</h2>
+            </div>
             <hr />
             <Balance></Balance>
-            
         </div>
     )
 }
