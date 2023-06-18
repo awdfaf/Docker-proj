@@ -3,6 +3,10 @@ import { useSearchParams } from 'next/navigation';
 import queryString from 'query-string';
 import axios from 'axios';
 import { useState } from 'react';
+import { Button } from '@nextui-org/react';
+import { Input } from "@nextui-org/react";
+import { Card, Text } from "@nextui-org/react";
+
 
 export default function Authresult() {
   const router = useSearchParams();
@@ -38,10 +42,22 @@ export default function Authresult() {
 
   return (
     <div>
-      <p>인증코드: {code}</p>
-      <button onClick={handleGetAccessToeknClick}>인증 요청</button>
-      <p>accessToken : {accessToken}</p>
-      <p>userSeqNo : {userSeqNo}</p>
-    </div>
+    <Card css={{ mw: "400px" }}>
+        <Card.Body>
+            <Text>
+                인증코드: {code}
+            </Text>
+        </Card.Body>
+    </Card>
+    <Button bordered color="primary" auto onClick={handleGetAccessToeknClick} style={{ width: "400px" }}>인증하기</Button>
+    <p style={{ 
+        width: '400px', 
+        overflow: 'hidden', 
+        textOverflow: 'ellipsis', 
+        whiteSpace: 'nowrap',
+        wordWrap: 'break-word'
+    }}>accessToken : {accessToken}</p>
+    <p>userSeqNo : {userSeqNo}</p>
+</div>
   );
 }

@@ -1,7 +1,11 @@
 'use client'
 
+import React from "react";
 import { useEffect, useState } from 'react';
 import Chart from 'chart.js/auto';
+import { Collapse, Text } from "@nextui-org/react";
+import { Button, Grid } from "@nextui-org/react";
+
 
 
 export default function Consume() {
@@ -17,6 +21,10 @@ export default function Consume() {
     const [chart4, setChart4] = useState(null);
     const [chart5, setChart5] = useState(null);
     const [chart6, setChart6] = useState(null);
+
+    
+    const [selectedBank, setSelectedBank] = useState('kakaobank');
+    
 
     // 데이터를 가져오는 로직을 별도의 함수로 분리
     const fetchData = (bankName) => {
@@ -38,9 +46,13 @@ export default function Consume() {
     }
 
     // 최초 렌더링 시에는 기본적으로 Abank 데이터를 가져옵니다.
+    // useEffect(() => {
+    //     fetchData('kakaobank');
+    // }, []);
     useEffect(() => {
-        fetchData('kakaobank');
-    }, []);
+        fetchData(selectedBank);
+      }, [selectedBank]);
+    
 
     useEffect(() => {
         if (total_df) {
@@ -421,22 +433,36 @@ export default function Consume() {
             setChart6(newChart6);
         }
     }, [total_df]);
-    
+
+
 
     return(
         <div>
-            {/* 각 버튼에 onClick 이벤트를 추가하여 해당하는 은행 데이터를 가져옵니다. */}
-            <button onClick={() => fetchData('kakaobank')}>카카오뱅크</button>
-            <button onClick={() => fetchData('kb')}>국민은행</button>
-            <button onClick={() => fetchData('hanabank')}>하나은행</button>
-
-            <div className="centered-text">
-                <h1>거래 내역 분석 시각화</h1>
-                
-                <div className="result-box">
-                <p id="result"></p>
-                </div>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                <Grid.Container gap={2} justify="center">
+                    <Grid>
+                        <Button bordered color="primary" auto onClick={() => fetchData('kakaobank')}>
+                            카카오뱅크
+                        </Button>
+                    </Grid>
+                    <Grid>
+                        <Button bordered color="primary" auto>
+                            국민은행
+                        </Button>
+                    </Grid>
+                    <Grid>
+                        <Button bordered color="primary" auto onClick={() => fetchData('hanabank')}>
+                            하나은행
+                        </Button>
+                    </Grid>
+                </Grid.Container>
             </div>
+            <Collapse title="거래 분석">
+                <Text>
+                <p id="result"></p>
+                </Text>
+            </Collapse>
+            
 
             <div className="chart-grid">
                 <div className="chart-container">
@@ -464,7 +490,9 @@ export default function Consume() {
                 </div>
             </div>
             < hr/>
-                <h2>Detected Transactions:</h2>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <h2>이상치 탐지</h2>
+                </div>
                 <style jsx global>{`
                     table {
                         border-collapse: collapse;

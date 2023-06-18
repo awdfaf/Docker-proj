@@ -1,5 +1,5 @@
 'use client'
-
+import { Button } from '@nextui-org/react';
 export default function Authbutton() {
 
     const handleAuthButtonClick = () => {
@@ -15,8 +15,8 @@ export default function Authbutton() {
 
     return (
     <div>
-        <button className="auth-button" 
-                onClick={ handleAuthButtonClick }>인증 하기</button>
+        <Button bordered color="primary" auto onClick={ handleAuthButtonClick }>인증하기</Button>
+        
     </div>
     );
 }

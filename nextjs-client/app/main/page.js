@@ -2,13 +2,14 @@
 
 import Link from 'next/link'
 import styled from 'styled-components'
+import { Image } from "@nextui-org/react";
 
 const MainDiv = styled.div`
     display: flex;
     flex-direction: column;
     align-items: stretch; /* 너비를 균등하게 차지하도록 설정 */
     justify-content: center;
-    height: 100vh;
+    height: 30vh;
     background-color: white;
 `;
 
@@ -35,16 +36,25 @@ const StyledButton = styled.button`
 
 export default function Main() {
     return (
-        <MainDiv>
-            <Link href="/authPage" passHref>
-                <StyledButton>인증 페이지</StyledButton>
-            </Link>
-            <Link href="/voice" passHref>
-                <StyledButton>보이스피싱 탐지</StyledButton>
-            </Link>
-            <Link href="/text" passHref>
-                <StyledButton>문자피싱 탐지</StyledButton>
-            </Link>
-        </MainDiv>
+        <div>
+            <Image
+            width={320}
+            height={180}
+            src="/logo.png" // 이미지 파일의 경로
+            alt="Default Image"
+            objectFit="contain" // 비율을 유지하고 잘리지 않도록 조절
+            />
+            <MainDiv>
+                <Link href="/authPage" passHref>
+                    <StyledButton>인증 페이지</StyledButton>
+                </Link>
+                <Link href="/voice" passHref>
+                    <StyledButton>보이스피싱 탐지</StyledButton>
+                </Link>
+                <Link href="/text" passHref>
+                    <StyledButton>문자피싱 탐지</StyledButton>
+                </Link>
+            </MainDiv>
+        </div>
     )
 }

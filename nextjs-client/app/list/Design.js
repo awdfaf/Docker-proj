@@ -1,4 +1,6 @@
+'use client'
 import React from "react";
+import { Button, Grid } from "@nextui-org/react";
 
 export default function MainCard({ bankName, fintechUseNo, accountNum }) {
     const handleQrButton = () => {
@@ -15,12 +17,18 @@ export default function MainCard({ bankName, fintechUseNo, accountNum }) {
         <div className="fintech-use-no">{fintechUseNo}</div>
         <div className="account-no">계좌번호 : {accountNum}</div>
         <div className="button-block">
-        <button className="qr-button" onClick={handleQrButton}>
-            qr코드
-        </button>
-        <button className="balance-button" onClick={handleBalanceButton}>
-            잔액조회
-        </button>
+        <Grid.Container gap={2}>
+            <Grid>
+                <Button bordered color="primary" auto onClick={handleQrButton}>
+                    qr코드
+                </Button>
+            </Grid>
+            <Grid>
+                <Button bordered color="secondary" auto onClick={handleBalanceButton}>
+                    잔액조회
+                </Button>
+            </Grid>
+        </Grid.Container>
         </div>
     </div>
     );

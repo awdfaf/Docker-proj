@@ -3,6 +3,7 @@
 import queryString from "query-string";
 import { useSearchParams } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
+import Nav from './Navation.js'
 
 export default function QRcode() {
     const router = useSearchParams();
@@ -12,7 +13,11 @@ export default function QRcode() {
     // console.log(fintechUseNo)
     return (
         <div>
-            <h2>QR코드</h2>
+            <Nav></Nav>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                <h2>QR코드</h2>
+            </div>
+            
             <hr />
             <div className="qr-block">
                 <QRCodeSVG size={200} value={fintechUseNo} />

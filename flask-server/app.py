@@ -15,7 +15,7 @@ CORS(app)
 UPLOAD_FOLDER = './audio'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# vp = Voice()
+vp = Voice()
 sms = Sms()
 
 
@@ -42,8 +42,8 @@ def upload_voice_files():
     
     
     
-    #res = vp.result(file_path)
-    res = ''
+    res = vp.result(file_path)
+    
     return res
 # ------------------------------------------------------------
 

@@ -116,38 +116,21 @@ class Voice:
         pad_new = pad_sequences(encoded, maxlen=800)
         score = float(self.loaded_model.predict(pad_new))
         
-        
-        
-        if score < 0.4:
-            print("해당 음성은 보이스피싱일 가능성이 낮습니다")
-        
-        
-        elif score < 0.6:
-            print("[의심] 해당 음성은 {}% 확률로 보이스피싱일 가능성이 있습니다. ".format(score * 100))
+        if score > 0.5:
+            print("{}% 확률로 보이스피싱입니다.".format(score * 100))
             score1 = float(self.type1_model.predict(pad_new))
             score2 = float(self.type2_model.predict(pad_new))
             
             if score1 > score2:
-                print("[의심] 대출사기형 보이스피싱으로 분류됩니다.")
-                text = "[의심] 대출사기형 보이스피싱으로 분류됩니다."
+                print("{}% 확률로 대출사기형 보이스피싱입니다.".format(score1 * 100))
+                text = "{}% 확률로 대출사기형 보이스피싱입니다.".format(score1 * 100)
             else:
-                print("[의심] 기관사칭형 보이스피싱으로 분류됩니다.")
-                text = "[의심] 기관사칭형 보이스피싱으로 분류됩니다."
-       
+                print("{}% 확률로 기관사칭형 보이스피싱입니다.".format(score2 * 100))
+                text = "{}% 확률로 기관사칭형 보이스피싱입니다.".format(score2 * 100)       
         else:
-            print("[경고] 해당 음성은 {}% 확률로 보이스피싱일 가능성이 있습니다. ".format(score * 100))
-            score1 = float(self.type1_model.predict(pad_new))
-            score2 = float(self.type2_model.predict(pad_new))
-            
-            if score1 > score2:
-                print("[경고] 대출사기형 보이스피싱으로 분류됩니다.")
-                text = "[경고] 대출사기형 보이스피싱으로 분류됩니다."
-            else:
-                print("[경고] 기관사칭형 보이스피싱으로 분류됩니다.")
-                text = "[경고] 기관사칭형 보이스피싱으로 분류됩니다."
-            
-        
-        return text     
+            print("{}% 확률로 보이스피싱이 아닙니다.".format((1 - score) * 100))
+            text = "{}% 확률로 보이스피싱이 아닙니다.".format((1 - score) * 100)
+        return text       
     def result(self,file_path):
         self.text = ''
         self.to_wav(file_path)
