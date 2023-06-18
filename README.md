@@ -152,4 +152,4 @@
 
 [웹 페이지 캡쳐](https://www.notion.so/908d5a09fac44da2b34b8d40ed6a4d03?pvs=21)
 
-![Untitled](%E1%84%87%E1%85%A2%E1%86%BC%E1%84%8F%E1%85%B3%E1%84%87%E1%85%B5%E1%84%87%E1%85%B5%E1%86%B7%E1%84%87%E1%85%A1%E1%86%B8_%E1%84%89%E1%85%B3%E1%84%86%E1%85%A1%E1%84%90%E1%85%B3%20%E1%84%80%E1%85%B3%E1%86%B7%E1%84%8B%E1%85%B2%E1%86%BC%207c05f058962d4b88a543d46bdc8b601e/Untitled.png)
+![Untitled](./images/Untitled.png)
