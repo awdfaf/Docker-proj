@@ -1,0 +1,13 @@
+version: '3'
+services:
+  flask-server:
+    image: awdfaf/flask-server:latest
+    ports:
+      - "5000:5000"
+    restart: always
+
+  nextjs-client:
+    image: awdfaf/nextjs-client:latest
+    ports:
+      - "3000:3000"
+    restart: always
