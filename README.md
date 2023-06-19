@@ -1,156 +1,425 @@
+# 도커를 이용한 프로젝트 배포
+
+상태: 배포됨
+생성 일시: 2023년 5월 23일 오후 7:34
+작성자: 박건우
+최하위 정렬: No
+
+# **Docker에 대한 이해**
+
+## **개요**
+
+Docker는 2013년에 처음 발표된 오픈소스 컨테이너 플랫폼으로, 어플리케이션과 그 의존성을 하나의 실행 가능한 패키지로 묶는데 사용됩니다. 이 패키지는 "컨테이너"라고 불리며, 컨테이너를 통해 개발, 테스트, 배포 환경 간에 일관성을 유지할 수 있습니다.
+
+## **Docker 구조**
+
+Docker의 주요 구성 요소는 Docker 엔진, 이미지, 컨테이너 및 Docker Hub입니다.
+
+- **Docker Engine**: Docker는 클라이언트-서버 형태의 구조로 동작합니다. Docker Engine은 클라이언트와 서버 모두를 포함합니다.
+- **이미지**: Docker 이미지는 어플리케이션 및 실행 환경을 패키징한 것으로, 이미지를 기반으로 컨테이너를 생성합니다. 이미지는 Dockerfile이라는 텍스트 파일에 정의되며, 이 파일에는 어플리케이션을 실행하는데 필요한 모든 명령어가 포함됩니다.
+- **컨테이너**: 컨테이너는 Docker 이미지의 실행 인스턴스입니다. 컨테이너는 이미지를 바탕으로 생성되며, 독립적인 실행 환경을 제공합니다.
+- **Docker Hub**: Docker Hub는 Docker 이미지를 공유하기 위한 중앙화된 리소스 저장소입니다. Docker Hub를 사용하면 이미지를 공개적으로 공유하거나 비공개로 유지할 수 있습니다.
+
+## **Docker의 장점**
+
+Docker는 다음과 같은 주요 장점을 제공합니다.
+
+- **효율성**: Docker는 가상 머신과 비교했을 때 훨씬 적은 오버헤드와 더 빠른 시작 시간을 제공합니다.
+- **이식성**: Docker 컨테이너는 어느 환경에서나 동일하게 동작합니다.
+- **버전 관리 및 구성 관리**: Docker는 이미지에 대한 버전 관리를 제공하며, 코드와 함께 응용 프로그램의 구성을 저장하고 관리할 수 있습니다.
+- **개발과 운영 간의 일관성**: Docker를 사용하면 개발, 테스트, 프로덕션 환경 간에 일관성을 유지할 수 있습니다.
+
+## **Docker의 단점**
+
+- **성능**: Docker는 호스트 OS와 공유하는 커널을 사용하므로, 일부 사용 사례에서는 가상 머신보다 성능이 떨어질 수 있습니다.
+- **복잡성**: Docker의 사용과 관리는 복잡할 수 있으며, 학습 곡선이 있습니다.
+- **보안**: Docker 컨테이너는 호스트 시스템과 공유하는 커널을 사용하기 때문에, 컨테이너가 보안 취약점을 가질 경우 시스템 전체에 영향을 줄 수 있습니다.
+
+## **Docker 추가 기능**
+
+- **볼륨**: Docker 볼륨은 데이터를 컨테이너 외부에 저장하여 데이터를 영구적으로 유지하거나 여러 컨테이너 간에 공유할 수 있도록 합니다.
+- **네트워킹**: Docker는 컨테이너 간의 네트워크 통신을 지원합니다. Docker 네트워킹은 여러 컨테이너 간의 통신, 컨테이너와 호스트 간의 통신, 그리고 외부 네트워크와의 통신을 가능하게 합니다.
+- **지속적인 통합/지속적인 배포 (CI/CD)**: Docker는 Jenkins, GitLab CI 등의 CI/CD 툴과 통합하여, 코드의 통합, 테스트, 배포를 자동화하는데 사용됩니다.
+
+## **결론**
+
+Docker는 신속하게 변화하는 소프트웨어 개발 및 배포 환경에서 중요한 도구로 자리 잡았습니다. 이에 대한 깊은 이해는 개발자, 시스템 관리자, DevOps 엔지니어 등 IT 전문가에게 큰 도움이 될 것입니다.
+
+## 프로젝트
+
+### 개발환경
+
+---
+
+- **VMware - Ubuntu**
+
 ![Untitled](./images/Untitled.png)
 
-# 뱅크비빔밥_스마트 금융
-
-## Introduce
-
-- 디지털 스마트 부산 아카데미 본 프로젝트
-- 주제 : AI와 핀테크를 활용한 소비자 맞춤 금융 서비스
-- 팀명 : 뱅크비빔밥
-- https://github.com/awdfaf/DSB_MainProJ
-
-## Members
-
-[건우](https://www.notion.so/8c418cb4f6e940f4b62cb5265f507ca8?pvs=21)
-
-[난희](https://www.notion.so/8018679c3eba45cd918ca5df69f6146b?pvs=21)
-
-[인재](https://www.notion.so/00ec248f49404c65858a13de56a43dd7?pvs=21)
-
-[예나](https://www.notion.so/241c8d29748a4f1da624fcde73f3ac37?pvs=21)
-
-[위훼이](https://www.notion.so/b25a8938844d46038685201c62d68c19?pvs=21)
-
-## Documents
-
-[프로젝트 실습 계획서(1조)_v1.0.hwp](%E1%84%87%E1%85%A2%E1%86%BC%E1%84%8F%E1%85%B3%E1%84%87%E1%85%B5%E1%84%87%E1%85%B5%E1%86%B7%E1%84%87%E1%85%A1%E1%86%B8_%E1%84%89%E1%85%B3%E1%84%86%E1%85%A1%E1%84%90%E1%85%B3%20%E1%84%80%E1%85%B3%E1%86%B7%E1%84%8B%E1%85%B2%E1%86%BC%207c05f058962d4b88a543d46bdc8b601e/%25ED%2594%2584%25EB%25A1%259C%25EC%25A0%259D%25ED%258A%25B8_%25EC%258B%25A4%25EC%258A%25B5_%25EA%25B3%2584%25ED%259A%258D%25EC%2584%259C(1%25EC%25A1%25B0)_v1.0.hwp)
-
-[간트차트 최종본.hwp](%E1%84%87%E1%85%A2%E1%86%BC%E1%84%8F%E1%85%B3%E1%84%87%E1%85%B5%E1%84%87%E1%85%B5%E1%86%B7%E1%84%87%E1%85%A1%E1%86%B8_%E1%84%89%E1%85%B3%E1%84%86%E1%85%A1%E1%84%90%E1%85%B3%20%E1%84%80%E1%85%B3%E1%86%B7%E1%84%8B%E1%85%B2%E1%86%BC%207c05f058962d4b88a543d46bdc8b601e/%25EA%25B0%2584%25ED%258A%25B8%25EC%25B0%25A8%25ED%258A%25B8_%25EC%25B5%259C%25EC%25A2%2585%25EB%25B3%25B8.hwp)
-
-[1조_기획안발표.pdf](%E1%84%87%E1%85%A2%E1%86%BC%E1%84%8F%E1%85%B3%E1%84%87%E1%85%B5%E1%84%87%E1%85%B5%E1%86%B7%E1%84%87%E1%85%A1%E1%86%B8_%E1%84%89%E1%85%B3%E1%84%86%E1%85%A1%E1%84%90%E1%85%B3%20%E1%84%80%E1%85%B3%E1%86%B7%E1%84%8B%E1%85%B2%E1%86%BC%207c05f058962d4b88a543d46bdc8b601e/1%25EC%25A1%25B0_%25EA%25B8%25B0%25ED%259A%258D%25EC%2595%2588%25EB%25B0%259C%25ED%2591%259C.pdf)
-
-[중간발표.pptx](%E1%84%87%E1%85%A2%E1%86%BC%E1%84%8F%E1%85%B3%E1%84%87%E1%85%B5%E1%84%87%E1%85%B5%E1%86%B7%E1%84%87%E1%85%A1%E1%86%B8_%E1%84%89%E1%85%B3%E1%84%86%E1%85%A1%E1%84%90%E1%85%B3%20%E1%84%80%E1%85%B3%E1%86%B7%E1%84%8B%E1%85%B2%E1%86%BC%207c05f058962d4b88a543d46bdc8b601e/%25EC%25A4%2591%25EA%25B0%2584%25EB%25B0%259C%25ED%2591%259C.pptx)
-
-## Meeting Minutes
-
-- 0주차 + 1주차
-    
-    [04.27 주제 토의 ](https://www.notion.so/04-27-248b95a029604e5985e1f08e18cb828d?pvs=21)
-    
-    [04.28 주제 구체화 ](https://www.notion.so/04-28-61a787819d674645bcdce1b82772b7f2?pvs=21)
-    
-    [5.1 주제선정 ](https://www.notion.so/5-1-5320267a76c04ea0b6ee26c4b51319d8?pvs=21)
-    
-    [5.2 주제 결정 - 뱅크비빔밥 ](https://www.notion.so/5-2-79f571d4823d4bd4bca2f105c75fe3bc?pvs=21)
-    
-    [5.3 기획안 발표 준비 - 역할분담 ](https://www.notion.so/5-3-181e35e16d4540b2b2d98f8551039c17?pvs=21)
-    
-    [5.4 기획안 발표 ](https://www.notion.so/5-4-22d362a88d884bccb3abbafba243ecfb?pvs=21)
-    
-- 2주차
-    
-    [5.8 각자 작업](https://www.notion.so/5-8-171c9f5b36c14bc5a6e960864149681c?pvs=21)
-    
-    [5.9 각자 작업](https://www.notion.so/5-9-0cfc64765d6443a2a9803493717bf8bc?pvs=21)
-    
-    [5.10 각자 작업](https://www.notion.so/5-10-e11e95a4d2bf46e18ea9ac86337a6893?pvs=21)
-    
-    [5.11 각자 작업](https://www.notion.so/5-11-c21c695cc9cf4a4ebd93cc788a67c293?pvs=21)
-    
-    [5.12 각자 작업](https://www.notion.so/5-12-e9fe267284fc40d6ae99a709b10c6a43?pvs=21)
-    
-- 3주차
-    
-    [5.15](https://www.notion.so/5-15-188ded0e9fdf44bd9f975229a3f1aaf8?pvs=21)
-    
-    [5.16 노는날](https://www.notion.so/5-16-b0bad508848747b18d1d00cc9867672f?pvs=21)
-    
-    [5.17 각자 작업](https://www.notion.so/5-17-cc1009e6f2c649aba483f6b190da40ee?pvs=21)
-    
-    [5.18 멸망](https://www.notion.so/5-18-925cdaaf555c4516bb02c9460c5eaf56?pvs=21)
-    
-    [5.19 테크토크](https://www.notion.so/5-19-cbf3eb2d05ca4ff3b7ba2208ac86f444?pvs=21)
-    
-- 4주차
-    
-    [5.22 각자 작업](https://www.notion.so/5-22-cc856038a74948038af11479a6b58354?pvs=21)
-    
-    [5.23 각자 작업](https://www.notion.so/5-23-5daa94b752b64c9b93b547df56f19737?pvs=21)
-    
-    [5.24](https://www.notion.so/5-24-e6acc59724754b9385297fc8cb435f93?pvs=21)
-    
-    [5.25 ppt](https://www.notion.so/5-25-ppt-4842f150268549c7bbbb1745aed1298e?pvs=21)
-    
-    [5.26 중간발표](https://www.notion.so/5-26-d792d26660d34652a3915470147981a7?pvs=21)
-    
-- 5주차
-    
-    [5.29 각자 작업](https://www.notion.so/5-29-e425539f1df449d5a6d2e58f7989140c?pvs=21)
-    
-    [5.30 사후역량평가](https://www.notion.so/5-30-ba6592aa71ce4d02bb1ca912f2c0eb21?pvs=21)
-    
-    [5.31 사후코딩테스트](https://www.notion.so/5-31-793c5e3d17854af79d4ced990972fa0d?pvs=21)
-    
-    [6.1 각자작업](https://www.notion.so/6-1-f53ce8e9f752449a9afb4018f4deb8cb?pvs=21)
-    
-    [6.2 각자작업](https://www.notion.so/6-2-9278b91d798244fa8e81e3ff4ed739e8?pvs=21)
-    
-- 6주차
-    
-    [6.5 각자 작업](https://www.notion.so/6-5-cdb26bfcbce84179b7dd262e69cc194c?pvs=21)
-    
-
-## Project
-
-### 소비패턴
+### 도커 환경 구축
 
 ---
 
-[이상치탐지 + 소비패턴 분석](https://www.notion.so/a2e6723a4ae043829ecac773d0b1bb89?pvs=21)
+- **우분투에 설치 가능한 패키지 버전과 정보 업데이트**
+    
+    ```bash
+    sudo apt-get update
+    ```
+    
+    ![Untitled](./images/Untitled%201.png)
+    
+- **도커 설치**
+    
+    ```bash
+    sudo apt install docker.io -y
+    ```
+    
+    ![Untitled](./images/Untitled%202.png)
+    
+- **도커 설치 확인**
+    
+    ```bash
+    docker -v
+    docker info
+    ```
+    
+    ![Untitled](./images/Untitled%203.png)
+    
 
-[소비 내역 분류](https://www.notion.so/71ac336fef3147899dcb0c67332d1413?pvs=21)
-
-### 피싱
-
----
-
-[음성](https://www.notion.so/2e15afe02ce5480abf67400f10112492?pvs=21)
-
-[문자](https://www.notion.so/a8d367f3dec84062b41b78e3e0ab19df?pvs=21)
-
-### 간편결제
-
----
-
-[금융결제원 오픈 API](https://www.notion.so/API-2defeb11e77d449eb3872f4eb3e48766?pvs=21)
-
-[인증페이지(코드발급)](https://www.notion.so/cfa6a57971d9458eb097e2bdbaf9ff6c?pvs=21)
-
-[조회페이지(토큰발급)](https://www.notion.so/cb31f56bf181489287d5e6a10a8b4706?pvs=21)
-
-[목록페이지(계좌목록)](https://www.notion.so/0ae8cb75f25f4124a1eb7e4703a85c51?pvs=21)
-
-[잔액조회](https://www.notion.so/de441978f72d4b2f9cf6cd49d73e97a2?pvs=21)
-
-[QR 코드](https://www.notion.so/QR-ddd4099469eb4abd82eb6e7913b7470c?pvs=21)
-
-[결제기능](https://www.notion.so/a1442ae9ca594a25ab537a6deaa9c7e6?pvs=21)
-
-### 웹 애플리케이션
+### 배포할 프로젝트 불러오기
 
 ---
 
-[Flask + React 연동](https://www.notion.so/Flask-React-bb434d2a1a7f42d3bbdc4313b65e6e3c?pvs=21)
+- **git 설치**
+    
+    ```bash
+    sudo apt install git
+    ```
+    
+    ![Untitled](./images/Untitled%204.png)
+    
+- **내 프로젝트를 git clone 하기**
+    
+    ```bash
+    git clone https://github.com/awdfaf/DSB_MainProJ
+    ```
+    
+    ![Untitled](./images/Untitled%205.png)
+    
+    ![Untitled](./images/Untitled%206.png)
+    
+    디지털 스마트 부산 아카데미에서 진행한 프로젝트
+    
 
-[AWS](https://www.notion.so/AWS-20581b3ff45244e3bb3df0b324a09061?pvs=21)
+### Dockerfile을 이용한 도커 이미지 생성
 
-[GCP](https://www.notion.so/GCP-fd2cd504b2884279a786747a90b8cdf4?pvs=21)
+---
 
-[Docker](https://www.notion.so/Docker-3b24f77d29704cc69b88e9aa349c9ce4?pvs=21)
+- **Dockerfile의 명령어**
+    
+    ![Untitled](./images/Untitled%207.png)
+    
+- **vim 에디터 설치**
+    
+    ```bash
+    sudo apt install vim
+    ```
+    
+    ![Untitled](./images/Untitled%208.png)
+    
+1. **Dockerize Flask Backend**
+    - **Flask 애플리케이션을 위한 Dockerfile을 만든다. Flask 애플리케이션의 루트 디렉토리에 `Dockerfile`이라는 이름의 파일을 만든다.**
+        
+        ```bash
+        vim Dockerfile
+        ```
+        
+        ```docker
+        # Use an official Python runtime as a parent image
+        FROM python:3.9
+        
+        # Install required packages
+        RUN apt-get update && \
+            apt-get install -y ffmpeg openjdk-11-jdk && \
+            apt-get clean && \
+            rm -rf /var/lib/apt/lists/*
+        
+        # Set the working directory in the container to /app
+        WORKDIR /app
+        
+        # Add the current directory contents into the container at /app
+        ADD . /app
+        
+        # Install pip and any needed packages specified in requirements.txt
+        RUN apt-get update && \
+        		apt-get install -y python3-pip && \
+        		apt-get install -y portaudio19-dev && \
+        		pip install --upgrade pip && \
+        		pip install --no-cache-dir -r requirements.txt
+        
+        # Make port 5000 available to the world outside this container
+        EXPOSE 5000
+        
+        # Define environment variable
+        ENV NAME World
+        
+        # Run app.py when the container launches
+        CMD ["python", "app.py"]
+        ```
+        
+        ![Untitled](./images/Untitled%209.png)
+        
+        ![Untitled](./images/Untitled%2010.png)
+        
+    - **이미지 빌드**
+        
+        ```bash
+        sudo docker build -t flask-server:1.0 .
+        ```
+        
+        ![Untitled](./images/Untitled%2011.png)
+        
+        ![Untitled](./images/Untitled%2012.png)
+        
+    - **컨테이너 실행으로 잘 빌드됐는지 확인**
+        
+        ```bash
+        sudo docker run -itd -p 5000:5000 --name flask-server flask-server:1.0
+        sudo docker ps
+        ```
+        
+        ![Untitled](./images/Untitled%2013.png)
+        
+    - **로그 확인**
+        
+        ```bash
+        sudo docker logs flask-server
+        ```
+        
+        ![Untitled](./images/Untitled%2014.png)
+        
+    - **VMware 브라우저에서 접속**
+        
+        ![Untitled](./images/Untitled%2015.png)
+        
+    - **VMware가 아닌 로컬 브라우저에서 접속**
+        
+        ![Untitled](./images/Untitled%2016.png)
+        
+    - **컨테이너 삭제**
+        
+        ```bash
+        sudo docker stop flask-server
+        sudo docker rm flask-server
+        ```
+        
+        ![Untitled](./images/Untitled%2017.png)
+        
+2. **Dockerize Next.js Frontend**
+    - **Next.js 애플리케이션을 위한 Dockerfile을 만든다. Next.js 애플리케이션의 루트 디렉토리에 `Dockerfile`이라는 이름의 파일을 만든다.**
+        
+        ```bash
+        vim Dockerfile
+        ```
+        
+        ```docker
+        # Base Image
+        FROM node:16.8-alpine
+        
+        # Set working directory in the container
+        WORKDIR /app
+        
+        # Copy package.json and package-lock.json before other files
+        # Utilise Docker cache to save re-installing dependencies if unchanged
+        COPY package*.json ./
+        
+        # Install npm in the latest version
+        RUN npm install -g npm@latest
+        
+        # Clear npm cache and install dependencies
+        RUN npm cache clean --force
+        RUN npm install --legacy-peer-deps
+        
+        # Copy all files
+        COPY . .
+        
+        # Build application
+        RUN npm run build
+        
+        # Expose the listening port
+        EXPOSE 3000
+        
+        # Run npm start script
+        CMD [ "npm", "start" ]
+        ```
+        
+        ![Untitled](./images/Untitled%2018.png)
+        
+        ![Untitled](./images/Untitled%2019.png)
+        
+    - **이미지 빌드**
+        
+        ```bash
+        sudo docker build -t nextjs-client:1.0 .
+        ```
+        
+        ![Untitled](./images/Untitled%2020.png)
+        
+        ![Untitled](./images/Untitled%2021.png)
+        
+    - **컨테이너 실행으로 잘 빌드됐는지 확인**
+        
+        ```bash
+        sudo docker run -itd -p 3000:3000 --name nextjs-client nextjs-client:1.0
+        sudo docker ps
+        ```
+        
+        ![Untitled](./images/Untitled%2022.png)
+        
+    - **로그 확인**
+        
+        ```bash
+        sudo docker logs nextjs-client
+        ```
+        
+        ![Untitled](./images/Untitled%2023.png)
+        
+    - **VMware 브라우저에서 접속**
+        
+        ![Untitled](./images/Untitled%2024.png)
+        
+    - **VMware가 아닌 로컬 브라우저에서 접속**
+        
+        ![Untitled](./images/Untitled%2025.png)
+        
+    - **컨테이너 삭제**
+        
+        ```bash
+        sudo docker stop nextjs-client
+        sudo docker rm nextjs-client
+        ```
+        
+        ![Untitled](./images/Untitled%2017.png)
+        
+3. **FE와 BE이 연동되는지 확인**
+    
+    ![Untitled](./images/Untitled%2026.png)
+    
+    Flask서버에서 Next.js의 웹페이지로 데이터 출력
+    
 
-[Kubernetes](https://www.notion.so/Kubernetes-b854b686bc0b48f7806da7459fbc5d9f?pvs=21)
+### 이미지를 도커 허브에 업로드
 
-## Conclusion
+---
 
-[웹 페이지 캡쳐](https://www.notion.so/908d5a09fac44da2b34b8d40ed6a4d03?pvs=21)
+[Docker Hub Container Image Library | App Containerization](https://hub.docker.com/)
 
+- **도커 허브에 계정 생성 및 로그인**
+    
+    ```bash
+    sudo docker login
+    ```
+    
+    ![Untitled](./images/Untitled%2027.png)
+    
+- **이미지에 태그 설정**
+    
+    ```bash
+    sudo docker tag flask-server:1.0 awdfaf/flask-server:latest
+    sudo docker tag nextjs-client:1.0 awdfaf/nextjs-client:latest
+    ```
+    
+    ![Untitled](./images/Untitled%2028.png)
+    
+- **도커 허브에 배포**
+    
+    ```bash
+    sudo docker push awdfaf/flask-server:latest
+    sudo docker push awdfaf/nextjs-client:latest
+    ```
+    
+    ![Untitled](./images/Untitled%2029.png)
+    
+- **도커 허브에서 확인**
+    
+    ![Untitled](./images/Untitled%2030.png)
+    
+
+### 도커 컴포즈로 빌드에서 운영까지
+
+---
+
+- **도커 컴포즈 설치**
+    
+    ```bash
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    ```
+    
+    ![Untitled](./images/Untitled%2031.png)
+    
+- **도커 컴포즈에 실행 권한 부여**
+    
+    ```bash
+    sudo chmod +x /usr/local/bin/docker-compose
+    ```
+    
+    ![Untitled](./images/Untitled%2032.png)
+    
+- **설치 확인**
+    
+    ```bash
+    docker-compose --version
+    ```
+    
+    ![Untitled](./images/Untitled%2033.png)
+    
+- **docker-compose.yml 파일 작성**
+    
+    ```yaml
+    version: '3'
+    services:
+      flask-server:
+        image: awdfaf/flask-server:latest
+        ports:
+          - "5000:5000"
+        restart: always
+    
+      nextjs-client:
+        image: awdfaf/nextjs-client:latest
+        ports:
+          - "3000:3000"
+        restart: always
+    ```
+    
+    ![Untitled](./images/Untitled%2034.png)
+    
+- **도커 컴포즈 빌드**
+    
+    ```bash
+    sudo docker-compose up
+    ```
+    
+    ![Untitled](./images/Untitled%2035.png)
+    
+- **작동 확인**
+    
+    ![Untitled](./images/Untitled%2036.png)
+    
+    ![Untitled](./images/Untitled%2037.png)
+    
+- **도커 컴포즈 종료**
+    
+    ```bash
+    sudo docker-compose down
+    ```
+    
+    ![Untitled](./images/Untitled%2038.png)
+    
+
+### 후기
+
+---
+
+- 도커 설치부터 운영까지하는 작업이었다. 다른 강의들의 실습용 이미지가 아닌 실제 내가 작업한 프로젝트를 이미지로 만들어 도커로 운영했다.
+- 리눅스 환경에서 루트 권한을 얻지 않아 대부분의 docker 명령어에 sudo를 붙여야 했다.
+- Dockerfile을 작성하고 이미지를 만드는 과정에서 에러가 많이 발생해 어려움이 많았다. chatgpt의 도움을 받아 해결했다.
+- 두개의 프레임워크를 그냥 로컬에서 구동하는게 아닌 도커를 통해 컨테이너에서 구동할 수 있었다.
